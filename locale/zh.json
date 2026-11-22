@@ -1,0 +1,7 @@
+{
+  "meta": {
+    "title": "网页版 DeepSeek",
+    "description": "在左侧栏加一个「网页版 DeepSeek」入口，点开就在中间面板里打开免费的 chat.deepseek.com。官网拒绝被嵌（frame-ancestors 'none'），所以插件在本机 localhost 起一个只绑回环的反向代理，让整站在代理自己的地址上跑起来：用的是你自己的网页版登录态、免费额度和网页端会话历史，不消耗 API 额度。用手机号及验证码登录一次即可——会话 Cookie 会存进 Harness 的凭据存储，重启 Harness 后自动恢复，不需要反复登录；面板右下角可随时「清除已保存的登录态」。数据只在这台机器上流转：代理不对外网开放、不记录请求、也绝不把 Harness 的 Cookie 发给上游。已知限制：微信扫码不可用（微信开放平台只认 chat.deepseek.com 这一个回调域名，需要改 hosts 并装本机证书，插件不改动系统设置），请用手机号、密码，或「导入登录态」；DSH 账号与网页版不是同一套账号，token 不通用；语音朗读走 websocket，未做转发。",
+    "detail": "docs/DETAIL.zh.md"
+  }
+}

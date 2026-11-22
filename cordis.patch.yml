@@ -1,0 +1,9 @@
+# dsh-deepseek-web-chat · bundle patch
+#
+# Host 半边起回环反代（端口可用 config.port 改，默认 45177，被占用时向上顺延），
+# 浏览器半边由 package.json 的 dsh.client 声明加载。
+- insert:
+    - id: deepseek-web-chat
+      name: dsh-deepseek-web-chat
+      config:
+        port: 45177

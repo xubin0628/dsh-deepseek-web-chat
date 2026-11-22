@@ -1,0 +1,7 @@
+{
+  "meta": {
+    "title": "DeepSeek Web",
+    "description": "Adds a sidebar entry that opens the free chat.deepseek.com web app in the centre panel. The site refuses to be framed (frame-ancestors 'none'), so the plugin runs a loopback-only reverse proxy on localhost and shows the site through it: your own web sign-in, free quota and web conversation history are used instead of API credits. Sign in once with your phone number and code — the session cookies are saved in Harness's credential store and restored after a restart, so you do not sign in again every time; Forget saved sign-in removes them. Everything stays on this machine: the proxy never listens beyond loopback, keeps no request log, and never forwards Harness cookies upstream. Known limits: WeChat QR login does not work (WeChat only accepts chat.deepseek.com as the callback domain, which needs a hosts entry and a trusted local certificate, and the plugin does not change system settings) — use the phone number, password, or Import sign-in; a DSH account and the web app are separate account systems with incompatible tokens; voice read-aloud uses a websocket and is not proxied.",
+    "detail": "docs/DETAIL.md"
+  }
+}
