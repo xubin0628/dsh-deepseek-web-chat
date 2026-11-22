@@ -11,6 +11,16 @@
     "deepseek",
     "web-chat"
   ],
+  "license": "MIT",
+  "author": "xubin0628",
+  "homepage": "https://github.com/xubin0628/dsh-deepseek-web-chat#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xubin0628/dsh-deepseek-web-chat.git"
+  },
+  "bugs": {
+    "url": "https://github.com/xubin0628/dsh-deepseek-web-chat/issues"
+  },
   "exports": {
     ".": "./index.js",
     "./client": "./client.js",
@@ -27,7 +37,9 @@
     "locale/*.json",
     "docs",
     "icon.svg",
-    "README.md"
+    "README.md",
+    "README.en.md",
+    "LICENSE"
   ],
   "dsh": {
     "bundle": {

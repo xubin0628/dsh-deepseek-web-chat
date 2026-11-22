@@ -1,8 +1,22 @@
 # 网页版 DeepSeek · dsh-deepseek-web-chat
 
+中文 | [English](README.en.md)
+
 在 DeepSeek Harness 左侧栏加一个「网页版 DeepSeek」入口，点开就在中间面板整页打开免费的
 [chat.deepseek.com](https://chat.deepseek.com/) 网页版——用你自己的网页版登录态、免费额度和
 网页端会话历史，不消耗 Harness 的 API 额度。
+
+> 非官方插件，与 DeepSeek 官方无关。它只在本机转发你自己的浏览器请求，不修改、不代理任何服务器端数据。
+
+## 安装
+
+```sh
+dsh plugin --profile desktop add github:xubin0628/dsh-deepseek-web-chat
+```
+
+或在 DSH 的 **设置 → 插件 → 添加插件** 里填 `github:xubin0628/dsh-deepseek-web-chat`。
+装完刷新页面，左侧栏出现「网页版 DeepSeek」。也可以直接指向本地目录：
+`dsh plugin --profile desktop add link:/absolute/path/to/dsh-deepseek-web-chat`。
 
 ## 为什么需要本机反代
 
@@ -16,11 +30,12 @@
 | 静态资源在 `fe-static.deepseek.com`，CORS 只放行 deepseek 域 | HTML、JS、CSS 里的 CDN 地址改写成同源 `/_cdn/...`，顺带去掉 `integrity` / `crossorigin` |
 | 主包把「IP 主机」判成 dev 环境 | 改写该分支为 production，避免给生产接口加调试头 |
 | 接口 `/api/v0/*` | 同源命中代理，原样流式转发（含 SSE、上传、PoW 校验头） |
-| Cookie | 站点 Cookie 收在 Host 进程内的罐子里，不回传浏览器；Harness 自己的登录 Cookie 绝不发往上游 |
+| 登录态长期有效 | 会话 Cookie 落盘到 DSH 凭据存储，重启 Harness 后装回 Cookie 罐 |
 | 站点隔离 | 站点用 `localhost`、界面在 `127.0.0.1`：不同站点，localStorage 互不相干 |
 | 响应头污染 | 白名单转发，绝不透传 HSTS、alt-svc、Access-Control-* |
 
 代理只监听 `127.0.0.1` 与 `[::1]`，不对外网开放，不记录请求，数据只在这台机器上流转。
+它绝不把 Harness 自己的登录 Cookie 发往上游。
 
 ## 使用
 
@@ -117,3 +132,29 @@ DELETE | `/deepseek-web/api/session` | 清除已保存的登录态
 ├── docs/               # 详情页图与本地化说明
 └── icon.svg
 ```
+
+## 安全与隐私
+
+- 代理只绑 `127.0.0.1` 与 `[::1]`，局域网和公网都访问不到。
+- 不记录请求日志，响应体与请求体都不落盘。
+- 站点 Cookie 只存在本机 DSH 凭据存储里（`deepseek-web-chat/site-session`），
+  与你在浏览器里登录 chat.deepseek.com 的凭据等价。想撤销就点面板上的「清除已保存的登录态」，
+  或删掉那条凭据记录。
+- 代理会剥掉上游的 CSP / X-Frame-Options / HSTS，并把 CDN 资源改写到同源。
+  这是为了让官网能在面板里被嵌入；它只影响这个面板里的页面，不改变你系统或其它浏览器里的设置。
+- 不会向 Harness 之外的任何地方发送你的 DSH 凭据。
+
+## 已知边界
+
+- 只绑本机回环，不对外网开放。
+- DSH 账号与网页版是两套账号，token 不通用：不能用 DSH 登录态自动登录网页版。
+- 微信扫码已隐藏（见上），请用手机号或密码登录。
+- 语音朗读走 `wss://.../api/v0/chat/tts/`，未代理；其它功能不依赖它。
+- 图形验证码（shumei / hcaptcha / Turnstile）按域名发放令牌，代理域下可能被拒，见上面的导入登录态。
+- 官网改版导致改写失效时，面板会停在白屏，顶栏「在新标签页打开」仍能用。
+
+## 许可证
+
+[MIT](LICENSE) © xubin0628
+
+本项目依赖 DeepSeek 官网自身的网页版前端，那些代码不包含在本仓库中，版权归其各自所有者。
